@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>socket.io chat</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="format-detection" content="telephone=no">
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+    <link rel='stylesheet' href='/stylesheet/style.css'>
+    <link rel='js' href='/js/recognition.js'>
+    <link rel='jpg' href='/jpg/recognition.js'>
+    
+</head>
+<body>
+  <div class="wrapper">
+    <form id="message_form" action="#" class="board-form">
+      <!--
+      <input id="input_msg" autocomplete="off" /><button>Send</button>
+      -->
+      <input type="textarea" id="input_msg" autocomplete="off" Name="enemy" value="" size=40 class="input" required>
+      <input type="button" value="音声入力" class="btn-flat-vertical-border" onclick="recognition.start()">
+      <button class="btn-flat-vertical-border">送信</button><br>
+    </form>
+        <li class="main-list__item">
+            <p class="board__title"><ul id="messages"></ul></p>
+        </li>
+  <script>
+      var socketio = io();
+      $(function(){
+          $('#message_form').submit(function(){
+            socketio.emit('message', $('#input_msg').val());
+            //書かれていなかったとき
+            $('#input_msg').val('');
+            return false;
+          });
+          socketio.on('message',function(msg){
+            $('#messages').append($('<li>').text(msg));
+          });
+        });
+  </script>
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"></script>
+
+  <script type="text/javascript" src="/js/recognition.js"></script>
+  </div>
+</body>
+</html>
